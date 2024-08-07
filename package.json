@@ -1,0 +1,17 @@
+{
+  "name": "html_ol",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.3.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "ol": "latest",
+    "proj4": "^2.11.0"
+  }
+}
