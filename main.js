@@ -9,7 +9,7 @@ import Feature from "ol/Feature";
 import { Polygon, Point } from "ol/geom";
 import { Style, Stroke, Fill, Icon } from "ol/style";
 import { transform } from "ol/proj";
-import { defaults as controlDefaults, ScaleLine, MousePosition, Attribution } from "ol/control";
+import { defaults as controlDefaults, ScaleLine, MousePosition } from "ol/control";
 import { register } from 'ol/proj/proj4';
 
 const mapId = "map";
@@ -64,10 +64,8 @@ const geoBaseWmsLayer = new TileLayer({
       FORMAT: 'image/png'
     },
     attributions: [
-      new Attribution({
-        html: 'All maps from ' +
-            '<a href="https://www.nrcan.gc.ca/earth-sciences/geography/topographic-information/maps/10995" target="_blank">Natural Resources Canada</a>'
-      })
+      'All maps from ' +
+      '<a href="https://www.nrcan.gc.ca/earth-sciences/geography/topographic-information/maps/10995" target="_blank">Natural Resources Canada</a>'
     ]
   }),
 });
