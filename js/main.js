@@ -1,4 +1,4 @@
-import './css/style.css';
+import '/css/style.css';
 import proj4 from "proj4";
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -14,10 +14,10 @@ import { register } from 'ol/proj/proj4';
 
 const mapId = "map";
 const mapCoordinates = {
-  minLat: 60.039,
-  maxLat: 60.146,
-  minLon: -123.056,
-  maxLon: -123.189,
+  minLat: 58.516,
+  maxLat: 58.716,
+  minLon: -117.133,
+  maxLon: -117.333,
 };
 
 const mapCenter = {
