@@ -6,8 +6,7 @@ import { TileWMS } from "ol/source";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
-import { Polygon, Point } from "ol/geom";
-import { Style, Stroke, Fill, Icon, Circle as CircleStyle} from "ol/style";
+import { Style, Stroke, Fill, Circle as CircleStyle} from "ol/style";
 import { transform, fromLonLat } from "ol/proj";
 import { defaults as controlDefaults, ScaleLine, MousePosition } from "ol/control";
 import { register } from 'ol/proj/proj4';
@@ -40,7 +39,17 @@ const mapCenter = {
     //   minZoom: 1,
     //   maxZoom: 12,
       extent: bounds
-    })
+    }),
+    controls: controlDefaults().extend([
+        new ScaleLine(),
+        new MousePosition({
+          coordinateFormat: (lonlat) => {
+            const precision = 4;
+            lonlat = transform([lonlat[0], lonlat[1]], 'EPSG:26912', 'EPSG:4326');
+            return (Math.round(lonlat[0] * Math.pow(10, precision)) / Math.pow(10, precision)) + '&deg;, ' + (Math.round(lonlat[1] * Math.pow(10, precision)) / Math.pow(10, precision)) + '&deg;';
+          }
+        }),
+    ])
   });
 
   /*
@@ -77,9 +86,9 @@ const mapCenter = {
   
   map.addLayer(markerLayer);
 
-  const jsonFetch = await fetch('http://localhost:8031/orogo/api/v1/points/all');
+//   const jsonFetch = await fetch('http://localhost:8031/orogo/api/v1/points/all');
 
-  const jsonResult = await jsonFetch.json();
+//   const jsonResult = await jsonFetch.json();
 
 //   jsonResult.forEach((x) => vectorSource.addFeature(new Feature({
 //     geometry: new Point(transform([x.lon, x.lat], 'EPSG:4326', 'EPSG:26912')),
