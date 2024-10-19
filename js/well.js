@@ -21,6 +21,8 @@ const mapCoordinates = {
     maxLon: -123.189,
 };
 
+const info = document.getElementById('notification');
+
 const mapCenter = {
     lat: mapCoordinates.minLat + ((mapCoordinates.maxLat - mapCoordinates.minLat) / 2),
     lon: mapCoordinates.minLon + ((mapCoordinates.maxLon - mapCoordinates.minLon) / 2),
@@ -72,8 +74,9 @@ const mapCenter = {
   map.addLayer(geoBaseWmsLayer);
 
   const vectorSource = new VectorSource({
-    url: 'http://localhost:8031/orogo/api/v1/points/geojson?limit=150',
+    url: 'http://mariolinux:8031/orogo/api/v1/points/geojson?limit=150',
     format: new GeoJSON(),
+    wrapX: true,
   });
 
   const markerLayer = new VectorLayer({
@@ -89,18 +92,26 @@ const mapCenter = {
   
   map.addLayer(markerLayer);
 
-  const info = document.getElementById('notification');
+  const updateInfo = (data) => {
+
+    if (data) {
+        info.innerHTML = data || '&nbsp;';
+    } else {
+        info.innerHTML = '&nbsp;';
+    }
+
+  };
 
   map.on('click', (evt) => {
-    const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+    const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature, {
+      hitTolerance: 10
+    });
     
     console.log(feature);
+  });
 
-    // if (feature) {
-    //     info.innerHTML = feature.get('id') || '&nbsp;';
-    // } else {
-    //     info.innerHTML = '&nbsp;';
-    // }
+  map.on('pointermove', (evt) => {
+    updateInfo(evt.pixel);
   });
 
   map.on('loadstart', function () {
