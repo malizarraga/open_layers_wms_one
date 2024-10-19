@@ -6,12 +6,23 @@ import { TileWMS } from "ol/source";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import GeoJSON from "ol/format/GeoJSON";
+import WebGLPointsLayer from 'ol/layer/WebGLPoints.js';
 import Feature from "ol/Feature";
 import { Point } from 'ol/geom';
 import { Style, Stroke, Fill, Circle as CircleStyle} from "ol/style";
 import { transform, fromLonLat, toLonLat } from "ol/proj";
 import { defaults as controlDefaults, ScaleLine, MousePosition } from "ol/control";
 import { register } from 'ol/proj/proj4';
+
+const predefinedStyles = {
+    circles: {
+        'circle-radius': 8,
+        'circle-fill-color': ['match', ['get', 'hover'], 1, '#ff3f3f', '#006688'],
+        'circle-rotate-with-view': false,
+        'circle-displacement': [0, 0],
+        'circle-opacity': 1,
+    },
+  };
 
 const mapId = "map";
 const mapCoordinates = {
@@ -72,19 +83,13 @@ const mapCenter = {
   map.addLayer(geoBaseWmsLayer);
 
   const vectorSource = new VectorSource({
-    url: 'http://localhost:8031/orogo/api/v1/points/geojson?limit=150',
+    url: 'http://localhost:8031/orogo/api/v1/points/geojson',
     format: new GeoJSON(),
   });
 
-  const markerLayer = new VectorLayer({
+  const markerLayer = new WebGLPointsLayer({
     source: vectorSource,
-    style: new Style({
-        image: new CircleStyle({
-          radius: 10,
-          fill: new Fill({color: 'rgba(255, 0, 0, 0.1)'}),
-          stroke: new Stroke({color: 'red', width: 1}),
-        }),
-    }),
+    style: predefinedStyles['circles'],
   });
   
   map.addLayer(markerLayer);
